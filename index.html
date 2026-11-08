@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Scan Alarm">
+  <meta name="theme-color" content="#0b0d12">
+  <title>Barcode Alarm</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body>
+
+  <!-- SETUP -->
+  <section id="screen-setup" class="screen active">
+    <h1>Barcode Alarm</h1>
+    <p class="sub">The alarm only stops when you scan your barcode.</p>
+
+    <div class="card">
+      <h2>1. Your barcode</h2>
+      <p id="registered" class="muted">No barcode registered yet.</p>
+      <button id="btn-register" class="btn">Register barcode</button>
+      <p class="hint">Pick something far from your bed, like a product in the basement or kitchen.</p>
+    </div>
+
+    <div class="card">
+      <h2>2. Alarm time</h2>
+      <input id="alarm-time" type="time" value="07:00">
+    </div>
+
+    <button id="btn-arm" class="btn btn-primary btn-big" disabled>Arm alarm</button>
+    <button id="btn-test" class="btn btn-ghost" disabled>Test: ring in 10 seconds</button>
+
+    <details class="card limits">
+      <summary>Before you rely on it</summary>
+      <ul>
+        <li>Keep this page <b>open and in front</b> with the phone <b>plugged in</b>. The screen stays on while the alarm is armed.</li>
+        <li>If the phone locks or you switch apps, iOS pauses the page and it can't ring.</li>
+        <li>Turn the volume up. The alarm uses media volume.</li>
+        <li>Set a normal iPhone alarm a few minutes later as a backup.</li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- ARMED -->
+  <section id="screen-armed" class="screen">
+    <div id="clock" class="clock">--:--</div>
+    <p class="sub">Alarm set for <b id="armed-for">--:--</b></p>
+    <p id="armed-countdown" class="muted"></p>
+    <p id="wake-status" class="muted small"></p>
+    <button id="btn-disarm" class="btn btn-ghost">Disarm</button>
+  </section>
+
+  <!-- RINGING -->
+  <section id="screen-ringing" class="screen">
+    <div class="ring-title">WAKE UP</div>
+    <div id="ring-clock" class="clock"></div>
+    <p class="sub">Go scan your barcode to stop the alarm.</p>
+    <button id="btn-scan-stop" class="btn btn-primary btn-big">Scan to stop</button>
+    <p id="ring-msg" class="msg"></p>
+  </section>
+
+  <!-- DONE -->
+  <section id="screen-done" class="screen">
+    <div class="ring-title calm">Good morning ☀️</div>
+    <p class="sub">Alarm stopped. You made it out of bed.</p>
+    <button id="btn-back" class="btn">Back to setup</button>
+  </section>
+
+  <!-- Tap overlay (needed after a reload to re-enable sound) -->
+  <div id="tap-overlay" class="overlay hidden">
+    <div>Tap anywhere to enable sound</div>
+  </div>
+
+  <!-- Scanner -->
+  <div id="scanner" class="scanner hidden">
+    <div class="scanner-inner">
+      <p id="scanner-title" class="scanner-title">Point the camera at the barcode</p>
+      <div id="reader"></div>
+      <p id="scanner-msg" class="msg"></p>
+      <button id="btn-scanner-close" class="btn btn-ghost">Close</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
